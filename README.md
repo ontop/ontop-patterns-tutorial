@@ -81,6 +81,18 @@ $> ./run.sh
 
 14) Click again on the `Reasoner` Menu, and on `Start Reasoner` to start Ontop
 
-15) At this point, you are ready to try the Bgee queries over the VKG provided by Ontop. To do so, use the `Ontop SPARQL` tab.
+15) At this point, you are ready to try Ontop to answer the Bgee queries. To do so, use the `Ontop SPARQL` tab.
 
 ![Image4](img/sparql-protege.png)
+
+### How Ontop Answers your Queries
+
+Ontop operates in _virtual mode_, that is, the KG extracted from the mappings is not materialized. The SPARQL queries are translated on-the-fly into corresponding SQL queries executable over the original data source, by exploiting the mapping definitions and the ontology axioms. To see what is the SQL translation corresponding to your SPARQL query, you can right-click on the `SPARQL query editor` field and select the `View SQL translation` option:
+
+![Image5](img/sql-translation.png)
+
+### Use Another Query Answering Engine 
+
+If you do not want to use Ontop for SPARQL query answering, you have the option to materialize the KG and import it into your favorite triple. To do this, click on the `Ontop` Menu and then `Materialize triples...` option.
+
+![Image6](img/materialize-protege.png)
