@@ -93,6 +93,6 @@ Ontop operates in _virtual mode_, that is, the KG extracted from the mappings is
 
 ### Use Another Query Answering Engine 
 
-If you do not want to use Ontop for SPARQL query answering, you have the option to materialize the KG and import it into your favorite triple. To do this, click on the `Ontop` Menu and then `Materialize triples...` option.
+If you do not want to use Ontop for SPARQL query answering, you have the option to materialize the KG and import it into your favorite triple store. To do this, click on the `Ontop` Menu and then `Materialize triples...` option.
 
 ![Image6](img/materialize-protege.png)
