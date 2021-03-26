@@ -65,6 +65,22 @@ jdbc.password=
 $> ./run.sh
 ~~~
 
-9) Click on the Menu File, then Preferences and then to the JDBC Drivers tab to add the jdbc downloaded driver to Protégé:
+9) Click on the `File` Menu, then `Preferences` and then to the `JDBC Drivers` tab to add the downloaded jdbc driver to Protégé:
 
 ![Image](img/jdbc-protege.png)
+
+10) Click on the `File` Menu, then `Open` to open the Bgee ontology (`bgee_v14_genex.owl` file).
+
+![Image1](img/open-onto-protege.png)
+
+11) Check whether the connection to the database is working property, by clicking the `Test Connection` button under the `Datasource Manager` sub-tab of the `Ontop Mappings` tab.
+
+12) ![Image2](img/check-connection-protege.png)
+
+13) Click on the `Reasoner` Menu, then select `Ontop 4.1.0`
+
+14) Click again on the `Reasoner` Menu, and on `Start Reasoner` to start Ontop
+
+15) At this point, you are ready to try the Bgee queries over the VKG provided by Ontop. To do so, use the `Ontop SPARQL` tab.
+
+![Image4](img/sparql-protege.png)
