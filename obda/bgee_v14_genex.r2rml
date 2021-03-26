@@ -1,0 +1,344 @@
+@prefix efo: <http://www.ebi.ac.uk/efo/> .
+@prefix genex: <http://purl.org/genex#> .
+@prefix lscr: <http://purl.org/lscr#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix orth: <http://purl.org/net/orth#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix up: <http://purl.uniprot.org/core/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:Stage> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "select stageId, replace(stageId,':','_') as stageIdSPARQL, stageName, stageDescription from stage WHERE stageId is not null"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "stagename";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate rdfs:label
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "stagedescription";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate terms:description
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class efo:EFO_0000399;
+      rr:template "http://purl.obolibrary.org/obo/{stageidsparql}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:Species> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "select speciesId, speciesCommonName, genomeVersion, genomeSpeciesId, concat(genus, ' ', species) as speciesConcatName from species"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "speciesconcatname";
+          rr:termType rr:Literal
+        ];
+      rr:predicate up:scientificName
+    ], [ a rr:PredicateObjectMap;
+      rr:object up:Species;
+      rr:predicate up:rank
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "speciescommonname";
+          rr:termType rr:Literal
+        ];
+      rr:predicate up:commonName
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.uniprot.org/taxonomy/{speciesid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate obo:RO_0002162
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class up:Taxon;
+      rr:template "http://purl.uniprot.org/taxonomy/{speciesid}";
+      rr:termType rr:IRI
+    ], [ a rr:SubjectMap, rr:TermMap;
+      rr:class orth:Organism;
+      rr:template "http://bgee.org/#ORGANISM_{speciesid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:AnatomicalEntity> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "select anatEntityId, replace(anatEntityId,':','_') as anatEntityIdSPARQL, anatEntityName, anatEntityDescription from anatEntity"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "anatentitydescription";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate terms:description
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "anatentityname";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate rdfs:label
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class genex:AnatomicalEntity;
+      rr:template "http://purl.obolibrary.org/obo/{anatentityidsparql}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:ExpressionCondition> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "select globalConditionId, replace(stageId,':','_') as stageIdSPARQL, replace(anatEntityId,':','_') as anatEntityIdSPARQL, speciesId from globalCond"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.obolibrary.org/obo/{stageidsparql}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasDevelopmentalStage
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.obolibrary.org/obo/{anatentityidsparql}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasAnatomicalEntity
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.uniprot.org/taxonomy/{speciesid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate obo:RO_0002162
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class genex:ExpressionCondition;
+      rr:template "http://bgee.org/#EXPRESSION_CONDITION_{globalconditionid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:Expression> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT score, globalExpressionId, globalConditionId, gene.geneId, CASE summaryQuality when 'SILVER' then 'CIO_0000030' when 'GOLD' then  'CIO_0000029' ELSE  'CIO_0000031'  end as confidence FROM globalExpression as ge JOIN gene ON gene.bgeeGeneId = ge.bgeeGeneId WHERE ge.callType='EXPRESSED'"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.obolibrary.org/obo/{confidence}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasConfidenceLevel
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://bgee.org/#EXPRESSION_CONDITION_{globalconditionid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasExpressionCondition
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://omabrowser.org/ontology/oma#GENE_{geneid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasSequenceUnit
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "score";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate genex:hasExpressionLevel
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class genex:Expression;
+      rr:template "http://bgee.org/#EXPRESSION_{globalexpressionid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:Gene_IsExpressedIn_anatEntity> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery """SELECT g.geneId, REPLACE(gc.anatEntityId,':','_') as anatEntityIdSPARQL
+FROM
+globalExpression as ge
+JOIN
+globalCond as gc
+ON ge.globalConditionId = gc.globalConditionId
+JOIN
+gene as g
+ON g.bgeeGeneId = ge.bgeeGeneId WHERE ge.callType='EXPRESSED'"""
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.obolibrary.org/obo/{anatentityidsparql}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:isExpressedIn
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "http://omabrowser.org/ontology/oma#GENE_{geneid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:Gene_IsExpressedIn_expressionCondition> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery """SELECT g.geneId, gc.globalConditionId
+FROM
+globalExpression as ge
+JOIN
+globalCond as gc
+ON ge.globalConditionId = gc.globalConditionId
+JOIN
+gene as g
+ON g.bgeeGeneId = ge.bgeeGeneId WHERE ge.callType='EXPRESSED'"""
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://bgee.org/#EXPRESSION_CONDITION_{globalconditionid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:isExpressedIn
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "http://omabrowser.org/ontology/oma#GENE_{geneid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:Gene> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "select geneId, geneName, geneDescription, speciesId from gene"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "https://bgee.org/?page=gene&gene_id={geneid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate rdfs:seeAlso
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "genename";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate rdfs:label
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "genedescription";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate terms:description
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "geneid";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate terms:identifier
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://bgee.org/#ORGANISM_{speciesid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate orth:organism
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://rdf.ebi.ac.uk/resource/ensembl/{geneid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate lscr:xrefEnsemblGene
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class orth:Gene;
+      rr:template "http://omabrowser.org/ontology/oma#GENE_{geneid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:AbsenceExpression> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery "SELECT score, globalExpressionId, globalConditionId, gene.geneId, CASE summaryQuality when 'SILVER' then 'CIO_0000030' when 'GOLD' then  'CIO_0000029' ELSE  'CIO_0000031'  end as confidence FROM globalExpression as ge JOIN gene ON gene.bgeeGeneId = ge.bgeeGeneId WHERE ge.callType='NOT_EXPRESSED'"
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:column "score";
+          rr:datatype xsd:string;
+          rr:termType rr:Literal
+        ];
+      rr:predicate genex:hasExpressionLevel
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.obolibrary.org/obo/{confidence}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasConfidenceLevel
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://bgee.org/#EXPRESSION_CONDITION_{globalconditionid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasExpressionCondition
+    ], [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://omabrowser.org/ontology/oma#GENE_{geneid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:hasSequenceUnit
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:class genex:AbsenceExpression;
+      rr:template "http://bgee.org/#NOT_EXPRESSED_{globalexpressionid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:Gene_IsNotExpressedIn_anatEntity> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery """SELECT g.geneId, REPLACE(gc.anatEntityId,':','_') as anatEntityIdSPARQL
+FROM
+globalExpression as ge
+JOIN
+globalCond as gc
+ON ge.globalConditionId = gc.globalConditionId
+JOIN
+gene as g
+ON g.bgeeGeneId = ge.bgeeGeneId WHERE ge.callType='NOT_EXPRESSED'"""
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://purl.obolibrary.org/obo/{anatentityidsparql}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:isAbsentIn
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "http://omabrowser.org/ontology/oma#GENE_{geneid}";
+      rr:termType rr:IRI
+    ] .
+
+<urn:Gene_IsNotExpressedIn_expressionCondition> a rr:TriplesMap;
+  rr:logicalTable [ a rr:R2RMLView;
+      rr:sqlQuery """SELECT g.geneId, gc.globalConditionId
+FROM
+globalExpression as ge
+JOIN
+globalCond as gc
+ON ge.globalConditionId = gc.globalConditionId
+JOIN
+gene as g
+ON g.bgeeGeneId = ge.bgeeGeneId WHERE ge.callType='NOT_EXPRESSED'"""
+    ];
+  rr:predicateObjectMap [ a rr:PredicateObjectMap;
+      rr:objectMap [ a rr:ObjectMap, rr:TermMap;
+          rr:template "http://bgee.org/#EXPRESSION_CONDITION_{globalconditionid}";
+          rr:termType rr:IRI
+        ];
+      rr:predicate genex:isAbsentIn
+    ];
+  rr:subjectMap [ a rr:SubjectMap, rr:TermMap;
+      rr:template "http://omabrowser.org/ontology/oma#GENE_{geneid}";
+      rr:termType rr:IRI
+    ] .

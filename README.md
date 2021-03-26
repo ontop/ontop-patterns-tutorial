@@ -17,7 +17,7 @@ Text: CC 4.0-BY
 │   ├── bgee_v14_genex.owl
 │   ├── bgee_v14_genex.properties
 │   ├── bgee_v14_genex.q
-│   └── bgee_v14_genex.ttl
+│   └── bgee_v14_genex.r2rml
 └── README.md
 ~~~
 
