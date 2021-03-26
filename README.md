@@ -55,7 +55,7 @@ jdbc.user=
 jdbc.password=
 ~~~
 
-6) Download the latest version of Ontop+Protégé [bundle](https://sourceforge.net/projects/ontop4obda/files/). Choose a bundle suitable to your operating system.
+6) Download the latest version of Ontop+Protégé [bundle](https://sourceforge.net/projects/ontop4obda/files/). For this tutorial, we will use the Ontop 4.1.0 bundle for Linux systems. Choose a bundle suitable to your operating system.
 
 7) Unzip the bundle, and download the postgres [jdbc driver](https://jdbc.postgresql.org/) to allow the connection between Protégé and your database. 
 
