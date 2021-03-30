@@ -403,7 +403,9 @@ dcterms:identifier rdfs:range rdfs:Literal ;
 
 ###  http://purl.org/genex#hasExpressionLevel
 genex:hasExpressionLevel rdf:type owl:DatatypeProperty ;
-                         rdfs:domain genex:Expression ;
+                         rdfs:domain [ rdf:type owl:Class ;
+                                       owl:unionOf ( :AbsenceExpression
+                                                     :Expression        ) ] ;
                          rdfs:range xsd:double ;
                          rdfs:label "has expression level score"@en ;
                          skos:altLabel "expression score"@en .
