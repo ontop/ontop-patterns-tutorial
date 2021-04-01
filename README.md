@@ -23,10 +23,10 @@ Text: CC 4.0-BY
 
 - `data`: MySQL and postgres dumps
 - `bgee_v14_genex.obda`: Mapping file (Ontop syntax)
-- `bgee_v14_genex.ttl`: Mapping file (R2RML syntax)
+- `bgee_v14_genex.r2rml`: Mapping file (R2RML syntax)
 - `bgee_v14_genex.owl`: Ontology file
 - `bgee_v14_genex.properties`: Properties file
-- `bgee_v14_genex.q`: Queries file
+- `bgee_v14_genex.q`: Queries file for Protege
 
 ## Protégé+postgres Tutorial
 
@@ -46,7 +46,7 @@ pgsql> CREATE DATABASE easybgee_v14_2;
 $> PGPASSWORD=$pwd psql -h $host -p $port --user=$user --dbname=$db_name -f $dump_file
 ~~~
 
-5) Provide the connection parameters to your database in the `bgee_v14_genex.properties` file.
+4) Provide the connection parameters to your database in the `bgee_v14_genex.properties` file.
 
 ~~~
 jdbc.url=jdbc\:postgresql\://host\:port/easybgee_v14_2
@@ -55,33 +55,33 @@ jdbc.user=
 jdbc.password=
 ~~~
 
-6) Download the latest version of Ontop+Protégé [bundle](https://sourceforge.net/projects/ontop4obda/files/). For this tutorial, we will use the Ontop 4.1.0 bundle for Linux systems. Choose a bundle suitable to your operating system.
+5) Download the latest version of Ontop+Protégé [bundle](https://sourceforge.net/projects/ontop4obda/files/). For this tutorial, we will use the Ontop 4.1.0 bundle for Linux systems. Choose a bundle suitable to your operating system.
 
-7) Unzip the bundle, and download the postgres [jdbc driver](https://jdbc.postgresql.org/) to allow the connection between Protégé and your database. 
+6) Unzip the bundle, and download the postgres [jdbc driver](https://jdbc.postgresql.org/) to allow the connection between Protégé and your database. 
 
-8) Launch Protégé through the dedicated script. In case of linux, the command is
+7) Launch Protégé through the dedicated script. In case of linux, the command is
 
 ~~~
 $> ./run.sh
 ~~~
 
-9) Click on the `File` Menu, then `Preferences` and then to the `JDBC Drivers` tab to add the downloaded jdbc driver to Protégé:
+8) Click on the `File` Menu, then `Preferences` and then to the `JDBC Drivers` tab to add the downloaded jdbc driver to Protégé:
 
 ![Image](img/jdbc-protege.png)
 
-10) Click on the `File` Menu, then `Open` to open the Bgee ontology (`bgee_v14_genex.owl` file).
+9) Click on the `File` Menu, then `Open` to open the Bgee ontology (`bgee_v14_genex.owl` file).
 
 ![Image1](img/open-onto-protege.png)
 
-11) Check whether the connection to the database is working property, by clicking the `Test Connection` button under the `Datasource Manager` sub-tab of the `Ontop Mappings` tab.
+10) Check whether the connection to the database is working property, by clicking the `Test Connection` button under the `Datasource Manager` sub-tab of the `Ontop Mappings` tab.
 
-12) ![Image2](img/check-connection-protege.png)
+ ![Image2](img/check-connection-protege.png)
 
-13) Click on the `Reasoner` Menu, then select `Ontop 4.1.0`
+11) Click on the `Reasoner` Menu, then select `Ontop 4.1.0`
 
-14) Click again on the `Reasoner` Menu, and on `Start Reasoner` to start Ontop
+12) Click again on the `Reasoner` Menu, and on `Start Reasoner` to start Ontop
 
-15) At this point, you are ready to try Ontop to answer the Bgee queries. To do so, use the `Ontop SPARQL` tab.
+13) At this point, you are ready to try Ontop to answer the Bgee queries. To do so, use the `Ontop SPARQL` tab.
 
 ![Image4](img/sparql-protege.png)
 
@@ -91,7 +91,7 @@ Ontop operates in _virtual mode_, that is, the KG extracted from the mappings is
 
 ![Image5](img/sql-translation.png)
 
-### Use Another Query Answering Engine 
+### Materialize Triples
 
 If you do not want to use Ontop for SPARQL query answering, you have the option to materialize the KG and import it into your favorite triple store. To do this, click on the `Ontop` Menu and then `Materialize triples...` option.
 
