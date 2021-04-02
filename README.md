@@ -1,10 +1,19 @@
-# patterns-tutorial
-patterns-tutorial
+# An Ontop tutorial using the Bgee database
 
-Data: CC 0
-Text: CC 4.0-BY
+**Copyrights**
+- Data (under the [data](data) directory): [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/)
+- Text: [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode)
+- Code: [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
-## Content
+**Table of Contents**
+
+- [Repository structure](#repository-structure)
+- [Setting up the PostgreSQL database](#setting-up-the-postgresql-database)
+- [Setting up the VKG using Ontop-Protégé](#setting-up-the-VKG-using-ontop-protégé)  
+- [Deploy a SPARQL endpoint using Ontop CLI](#deploy-a-sparql-endpoint-using-ontop-cli)
+- [Deploy a SPARQL endpoint using Ontop Docker](#deploy-a-sparql-endpoint-using-pntop-docker)
+
+## Repository structure
 
 ~~~
 .
@@ -28,11 +37,7 @@ Text: CC 4.0-BY
 - `bgee_v14_genex.properties`: Properties file
 - `bgee_v14_genex.q`: Queries file for Protege
 
-## Protégé+postgres Tutorial
-
-In this tutorial we will use the postgres dump and the graphical tool Protégé. 
-
-### Setting up the PostgreSQL database with the sample data
+### Setting up the PostgreSQL database
 
 1) Create a database called `easybgee_v14_2`. For example, in `pgsql` you can use the command:
 
@@ -45,7 +50,7 @@ pgsql> CREATE DATABASE easybgee_v14_2;
 3) Use the extracted dump file to create a database `easybgee_v14_2`. For example, you can use the following bash `pgsql` invocation:
 
 ~~~
-$> PGPASSWORD=$pwd psql -h $host -p $port --user=$user --dbname=$db_name -f $dump_file
+$> PGPASSWORD=$pwd psql -h $host -p $port --user=$user --dbname=easybgee_v14_2 -f $dump_file
 ~~~
 
 4) Provide the connection parameters to your database in the [bgee_v14_genex.properties](obda/bgee_v14_genex.properties) file. Replace the placeholders `<host>`,`<port>`, `<user>`, and `<password>` with appropriate values.
@@ -104,4 +109,70 @@ If you do not want to use Ontop for SPARQL query answering, you have the option 
 
 ![Image6](img/materialize-protege.png)
 
-### 
+## Deploy a SPARQL endpoint using Ontop CLI
+
+1) Download Ontop [CLI](https://sourceforge.net/projects/ontop4obda/files/). For this tutorial, we will use the Ontop 4.1.0 CLI bundle. Exact the zip file of Ontop CLI to a directory, which is denoted as $ONTOP_CLI_DIR below.
+   
+2) Copy the [jdbc driver](jdbc/postgresql-42.2.14.jre7.jar) to the `$ONTOP_CLI_DIR/jdbc`
+
+3) Go to the `obda` directory and start the Ontop SPARQL Endpoint
+
+`$ONTOP_CLI_DIR/ontop endpoint --ontology=bgee_v14_genex.owl --mapping=bgee_v14_genex.obda --properties=bgee_v14_genex.properties --portal=bgee_v14_genex.toml`
+
+4) Navigate to <http://localhost:8080> to try the Web portal of the SPARQL endpoint
+
+![Endpoint](img/endpoint.png)
+
+5) A SPARQL endpoint backed by ontop at URL <http://localhost:8880/sparql> (assuming default port `8880` is used), which may be accessed using any HTTP client, including SPARQL clients and tools using the standard SPARQL HTTP protocol. For instance, using curl:
+
+```shell
+curl --request POST \
+   --url http://localhost:8880/sparql \
+   --header 'accept: application/json' \
+   --header 'content-type: application/sparql-query' \
+   --data 'SELECT * { ?s ?p ?o } LIMIT 5'
+```
+
+## Deploy a SPARQL endpoint using Ontop Docker
+
+### Requirements
+* [Docker](https://docs.docker.com/get-docker/), version 17.09.0 or higher
+* [Docker Compose](https://docs.docker.com/compose/install/), version 1.17.0 or higher
+
+### Steps
+
+1) to start the prototype, downloading / building the required images and containers if needed
+  ```
+  docker-compose up
+  ```
+  (note: may add option `-d` to run in background, in which case logs are not be displayed to standard output but are still accessible via `docker-compose logs`)
+
+**Services** When running, the prototype exposes the following services:
+
+* a PostgreSQL server with the sample data, with connection information defined in the [.env](`.env`) file. 
+
+* a Web portal of the SPARQL endpoint backed by ontop at URL <http://localhost:8880/>
+  
+* a SPARQL endpoint backed by ontop at URL <http://localhost:8880/sparql> (assuming default port `8880` is used).
+
+2) to stop the prototype, if running
+  ```
+  docker-compose down
+  ```
+
+3) to stop the prototype, if running, and also clean any image / container / data associating to it (useful for cleaning up)
+  ```
+  docker-compose down --volumes --remove-orphans
+  ```
+  (note: the above command does not remove Docker images that may result being unused after stopping and removing this prototype containers; to remove such images, add option `--rmi all`)
+
+4) to check the status of the containers forming the prototype
+  ```
+  docker-compose ps
+  ```
+
+5) to check the logs of specific container(s) or of all containers (if no container name is supplied)
+  ```
+  docker-compose logs <container name 1> ... <contaner name N>
+  ```
+
