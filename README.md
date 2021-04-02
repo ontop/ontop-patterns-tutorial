@@ -7,11 +7,11 @@
 
 **Table of Contents**
 
-- [Repository structure](#repository-structure)
-- [Setting up the PostgreSQL database](#setting-up-the-postgresql-database)
-- [Setting up the VKG using Ontop-Protégé](#setting-up-the-VKG-using-ontop-protégé)  
-- [Deploy a SPARQL endpoint using Ontop CLI](#deploy-a-sparql-endpoint-using-ontop-cli)
-- [Deploy a SPARQL endpoint using Ontop Docker](#deploy-a-sparql-endpoint-using-pntop-docker)
+- [0. Repository structure](#repository-structure)
+- [1. Setting up the PostgreSQL database](#setting-up-the-postgresql-database)
+- [2. Setting up the VKG using Ontop-Protégé](#setting-up-the-VKG-using-ontop-protégé)  
+- [3. Deploy a SPARQL endpoint using Ontop CLI](#deploy-a-sparql-endpoint-using-ontop-cli)
+- [4. Deploy a SPARQL endpoint using Ontop Docker](#deploy-a-sparql-endpoint-using-ontop-docker)
 
 ## Repository structure
 
