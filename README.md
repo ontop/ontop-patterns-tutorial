@@ -32,9 +32,11 @@ Text: CC 4.0-BY
 
 In this tutorial we will use the postgres dump and the graphical tool Protégé. 
 
+### Setting up the PostgreSQL database with the sample data
+
 1) Create a database called `easybgee_v14_2`. For example, in `pgsql` you can use the command:
 
-~~~
+~~~shell
 pgsql> CREATE DATABASE easybgee_v14_2;
 ~~~
 
@@ -46,53 +48,60 @@ pgsql> CREATE DATABASE easybgee_v14_2;
 $> PGPASSWORD=$pwd psql -h $host -p $port --user=$user --dbname=$db_name -f $dump_file
 ~~~
 
-4) Provide the connection parameters to your database in the `bgee_v14_genex.properties` file.
+4) Provide the connection parameters to your database in the [bgee_v14_genex.properties](obda/bgee_v14_genex.properties) file. Replace the placeholders `<host>`,`<port>`, `<user>`, and `<password>` with appropriate values.
 
-~~~
-jdbc.url=jdbc\:postgresql\://host\:port/easybgee_v14_2
+~~~properties
+jdbc.url=jdbc\:postgresql\://<host>\:<port>/easybgee_v14_2
 jdbc.driver=org.postgresql.Driver
-jdbc.user=
-jdbc.password=
+jdbc.user=<user>
+jdbc.password=<password>
 ~~~
 
-5) Download the latest version of Ontop+Protégé [bundle](https://sourceforge.net/projects/ontop4obda/files/). For this tutorial, we will use the Ontop 4.1.0 bundle for Linux systems. Choose a bundle suitable to your operating system.
+### Setting up the VKG using Ontop-Protégé
 
-6) Unzip the bundle, and download the postgres [jdbc driver](https://jdbc.postgresql.org/) to allow the connection between Protégé and your database. 
+1) Download the latest version of Ontop+Protégé [bundle](https://sourceforge.net/projects/ontop4obda/files/). For this tutorial, we will use the Ontop 4.1.0 bundle for Linux systems. Choose a bundle suitable to your operating system.
 
-7) Launch Protégé through the dedicated script. In case of linux, the command is
+2) Unzip the bundle. Launch Protégé through the dedicated script. In case of linux, the command is
 
 ~~~
 $> ./run.sh
 ~~~
 
-8) Click on the `File` Menu, then `Preferences` and then to the `JDBC Drivers` tab to add the downloaded jdbc driver to Protégé:
+3) Click on the `File` Menu, then `Preferences` and then to the `JDBC Drivers` tab to add the downloaded jdbc driver to Protégé:
 
 ![Image](img/jdbc-protege.png)
 
-9) Click on the `File` Menu, then `Open` to open the Bgee ontology (`bgee_v14_genex.owl` file).
+4) Click on the `File` Menu, then `Open` to open the Bgee ontology (`bgee_v14_genex.owl` file).
 
 ![Image1](img/open-onto-protege.png)
 
-10) Check whether the connection to the database is working property, by clicking the `Test Connection` button under the `Datasource Manager` sub-tab of the `Ontop Mappings` tab.
+5) Check whether the connection to the database is working property, by clicking the `Test Connection` button under the `Datasource Manager` sub-tab of the `Ontop Mappings` tab.
 
  ![Image2](img/check-connection-protege.png)
 
-11) Click on the `Reasoner` Menu, then select `Ontop 4.1.0`
+6) Browse the ontology and mapping in the `Ontop Mappings` / `Mapping Manager` tab.
 
-12) Click again on the `Reasoner` Menu, and on `Start Reasoner` to start Ontop
+7) Click on the `Reasoner` Menu, then select `Ontop 4.1.0`
 
-13) At this point, you are ready to try Ontop to answer the Bgee queries. To do so, use the `Ontop SPARQL` tab.
+8) Click again on the `Reasoner` Menu, and on `Start Reasoner` to start Ontop
+
+### SPARQL Query answering in Ontop-Protégé  
+
+
+1) At this point, you are ready to try Ontop to answer the Bgee queries. To do so, use the `Ontop SPARQL` tab.
 
 ![Image4](img/sparql-protege.png)
 
-### How Ontop Answers your Queries
+#### How Ontop Answers your Queries
 
 Ontop operates in _virtual mode_, that is, the KG extracted from the mappings is not materialized. The SPARQL queries are translated on-the-fly into corresponding SQL queries executable over the original data source, by exploiting the mapping definitions and the ontology axioms. To see what is the SQL translation corresponding to your SPARQL query, you can right-click on the `SPARQL query editor` field and select the `View SQL translation` option:
 
 ![Image5](img/sql-translation.png)
 
-### Materialize Triples
+### Materialize RDF Triples in Ontop-Protégé
 
 If you do not want to use Ontop for SPARQL query answering, you have the option to materialize the KG and import it into your favorite triple store. To do this, click on the `Ontop` Menu and then `Materialize triples...` option.
 
 ![Image6](img/materialize-protege.png)
+
+### 
