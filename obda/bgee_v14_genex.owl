@@ -405,7 +405,9 @@ dcterms:identifier rdfs:range rdfs:Literal ;
 genex:hasExpressionLevel rdf:type owl:DatatypeProperty ;
                          rdfs:domain [ rdf:type owl:Class ;
                                        owl:unionOf ( :AbsenceExpression
-                                                     :Expression        ) ] ;
+                                                     :Expression
+                                                   )
+                                     ] ;
                          rdfs:range xsd:double ;
                          rdfs:label "has expression level score"@en ;
                          skos:altLabel "expression score"@en .
@@ -466,6 +468,14 @@ up:scientificName rdf:type owl:DatatypeProperty ,
 #################################################################
 #    Classes
 #################################################################
+
+###  http://biosoda.cloudlab.zhaw.ch#AbsenceExpression
+:AbsenceExpression rdf:type owl:Class .
+
+
+###  http://biosoda.cloudlab.zhaw.ch#Expression
+:Expression rdf:type owl:Class .
+
 
 ###  http://purl.obolibrary.org/obo/BFO_0000001
 obo:BFO_0000001 rdf:type owl:Class ;
@@ -874,8 +884,8 @@ up:Species rdf:type owl:NamedIndividual ,
 #    Annotations
 #################################################################
 
-dc:identifier dcterms:description "Recommended best practice is to identify the resource by means of a string conforming to a formal identification system. "@en ;
-              rdfs:isDefinedBy dc: ;
+dc:identifier rdfs:isDefinedBy dc: ;
+              dcterms:description "Recommended best practice is to identify the resource by means of a string conforming to a formal identification system. "@en ;
               rdfs:comment "An unambiguous reference to the resource within a given context."@en ;
               rdfs:label "Identifier"@en .
 
@@ -910,6 +920,38 @@ dc:identifier dcterms:description "Recommended best practice is to identify the 
                                     ] ;
                           rdf:rest [ rdf:type swrl:AtomList ;
                                      rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                 swrl:propertyPredicate genex:hasSequenceUnit ;
+                                                 swrl:argument1 <urn:swrl#e> ;
+                                                 swrl:argument2 <urn:swrl#seq>
+                                               ] ;
+                                     rdf:rest rdf:nil
+                                   ]
+                        ]
+             ] ;
+   swrl:head [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                           swrl:propertyPredicate genex:isAbsentIn ;
+                           swrl:argument1 <urn:swrl#seq> ;
+                           swrl:argument2 <urn:swrl#cond>
+                         ] ;
+               rdf:rest rdf:nil
+             ]
+ ] .
+
+[ rdf:type swrl:Imp ;
+   swrl:body [ rdf:type swrl:AtomList ;
+               rdf:first [ rdf:type swrl:ClassAtom ;
+                           swrl:classPredicate genex:AbsenceExpression ;
+                           swrl:argument1 <urn:swrl#e>
+                         ] ;
+               rdf:rest [ rdf:type swrl:AtomList ;
+                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                      swrl:propertyPredicate genex:hasExpressionCondition ;
+                                      swrl:argument1 <urn:swrl#e> ;
+                                      swrl:argument2 <urn:swrl#cond>
+                                    ] ;
+                          rdf:rest [ rdf:type swrl:AtomList ;
+                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
                                                  swrl:propertyPredicate genex:hasStrain ;
                                                  swrl:argument1 <urn:swrl#cond> ;
                                                  swrl:argument2 <urn:swrl#strain>
@@ -1157,38 +1199,6 @@ dc:identifier dcterms:description "Recommended best practice is to identify the 
                            swrl:propertyPredicate genex:isAbsentIn ;
                            swrl:argument1 <urn:swrl#seq> ;
                            swrl:argument2 <urn:swrl#stage>
-                         ] ;
-               rdf:rest rdf:nil
-             ]
- ] .
-
-[ rdf:type swrl:Imp ;
-   swrl:body [ rdf:type swrl:AtomList ;
-               rdf:first [ rdf:type swrl:ClassAtom ;
-                           swrl:classPredicate genex:AbsenceExpression ;
-                           swrl:argument1 <urn:swrl#e>
-                         ] ;
-               rdf:rest [ rdf:type swrl:AtomList ;
-                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                                      swrl:propertyPredicate genex:hasExpressionCondition ;
-                                      swrl:argument1 <urn:swrl#e> ;
-                                      swrl:argument2 <urn:swrl#cond>
-                                    ] ;
-                          rdf:rest [ rdf:type swrl:AtomList ;
-                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                                                 swrl:propertyPredicate genex:hasSequenceUnit ;
-                                                 swrl:argument1 <urn:swrl#e> ;
-                                                 swrl:argument2 <urn:swrl#seq>
-                                               ] ;
-                                     rdf:rest rdf:nil
-                                   ]
-                        ]
-             ] ;
-   swrl:head [ rdf:type swrl:AtomList ;
-               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                           swrl:propertyPredicate genex:isAbsentIn ;
-                           swrl:argument1 <urn:swrl#seq> ;
-                           swrl:argument2 <urn:swrl#cond>
                          ] ;
                rdf:rest rdf:nil
              ]
