@@ -123,11 +123,11 @@ If you do not want to use Ontop for SPARQL query answering, you have the option 
 
 ![Endpoint](img/endpoint.png)
 
-5) A SPARQL endpoint backed by ontop at URL <http://localhost:8880/sparql> (assuming default port `8880` is used), which may be accessed using any HTTP client, including SPARQL clients and tools using the standard SPARQL HTTP protocol. For instance, using curl:
+5) A SPARQL endpoint backed by ontop at URL <http://localhost:8080/sparql> (assuming default port `8880` is used), which may be accessed using any HTTP client, including SPARQL clients and tools using the standard SPARQL HTTP protocol. For instance, using curl:
 
 ```shell
 curl --request POST \
-   --url http://localhost:8880/sparql \
+   --url http://localhost:8080/sparql \
    --header 'accept: application/json' \
    --header 'content-type: application/sparql-query' \
    --data 'SELECT * { ?s ?p ?o } LIMIT 5'
